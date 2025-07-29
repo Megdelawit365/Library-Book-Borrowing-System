@@ -9,7 +9,8 @@ class Student extends Model
 {
     protected $fillable = [
         "name",
-        "student_id"
+        "student_id",
+        "email"
     ];
     public function borrow()
     {

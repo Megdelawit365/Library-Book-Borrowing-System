@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Models\User;
 use App\Models\Student;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class StudentController extends Controller
 {
@@ -31,11 +33,20 @@ class StudentController extends Controller
     {
         $request->validate([
             "name" => "string|required",
-            "student_id" => "integer|digits:8"
+            "student_id" => "integer|digits:8|unique:students,student_id",
+            "email" => "string|unique:students,email",
+            "password" => "string|required",
         ]);
-        $Student = Student::create([
+        $student = Student::create([
             "name" => $request->name,
             "student_id" => $request->student_id,
+            "email" => $request->email
+        ]);
+        User::create([
+            "name" => $request->name,
+            "role" => "student",
+            "email" => $request->email,
+            "password" => Hash::make($request->password),
         ]);
         return redirect()->route("student.index")->with("success", "Student added successfully");
     }
@@ -49,7 +60,7 @@ class StudentController extends Controller
     }
 
     /**
-     * Show the form for editing the specifFreied resource.
+     * Show the form for editing the specified resource.
      */
     public function edit(string $id)
     {

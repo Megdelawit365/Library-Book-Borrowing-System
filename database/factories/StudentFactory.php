@@ -18,7 +18,8 @@ class StudentFactory extends Factory
     {
         return [
             "name" => $this->faker->name,
-            "student_id" => $this->faker->randomNumber($nbDigits = 8)
+            "student_id" => $this->faker->randomNumber($nbDigits = 8),
+            "email" => $this->faker->unique->safeEmail,
         ];
     }
 }

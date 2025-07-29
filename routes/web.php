@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BookController;
+use App\Http\Controllers\BorrowController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\CategoryController;
@@ -18,7 +19,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
 
+Route::middleware(['auth', 'librarian'])->group(function () {
     Route::get('/books', [BookController::class, 'index'])->name('book.index');
     Route::get('/book/create', [BookController::class, 'create'])->name('book.create');
     Route::post('/book/store', [BookController::class, 'store'])->name('book.store');
@@ -39,7 +42,12 @@ Route::middleware('auth')->group(function () {
     Route::post('/student/store', [StudentController::class, 'store'])->name('student.store');
     Route::get('/student/edit/{id}', [StudentController::class, 'edit'])->name('student.edit');
     Route::put('/student/update/{id}', [StudentController::class, 'update'])->name('student.update');
-    Route::delete('/student/delete/{id}', [StudentController::class, 'destroy'])->name('category.delete');
+    Route::delete('/student/delete/{id}', [StudentController::class, 'destroy'])->name('student.delete');
+
+    Route::get('/borrows', [BorrowController::class, 'index'])->name('borrows.index');
+    Route::get('/borrows/create', [BorrowController::class, 'create'])->name('borrows.create');
+    Route::post('/borrows/store', [BorrowController::class, 'store'])->name('borrows.store');
+    Route::put('/borrows/update/{id}', [BorrowController::class, 'update'])->name('borrows.update');
 });
 
 require __DIR__ . '/auth.php';

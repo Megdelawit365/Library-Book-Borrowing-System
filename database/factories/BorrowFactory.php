@@ -18,13 +18,12 @@ class BorrowFactory extends Factory
      */
     public function definition(): array
     {
-        $borrowed = $this->faker->dateTimeThisCentury();
-        $returned = $this->faker->dateTimeBetween($borrowed, 'now');
+        $borrowed = $this->faker->dateTimeThisDecade();
         return [
             "student_id" => Student::factory(),
             "book_id" => Book::factory(),
             "borrowed_at" => $borrowed,
-            "returned_at" => $returned,
+            "returned_at" => $this->faker->optional()->dateTimeBetween($borrowed, "now"),
         ];
     }
 }
